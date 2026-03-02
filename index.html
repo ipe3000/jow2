@@ -33,7 +33,17 @@
     .pill{background:#0f172a; border:1px solid #334155; border-radius:999px; padding:3px 8px; color:var(--muted); font-size:12px}
     .tableauWrap{overflow:hidden; display:flex; justify-content:center; align-items:flex-start}
     .tableau{position:relative; margin:0; transform-origin:top left}
-    .sidePanel .bd{overflow:auto}
+    .sidePanel .bd{display:flex; flex-direction:column; gap:8px; overflow:auto; padding:8px}
+    .sidePanel .row{margin-bottom:0!important}
+    .sidePanel button{padding:4px 10px; font-size:12px; border-radius:8px}
+    .sidePanel .status{gap:6px; font-size:12px}
+    .sidePanel .pill{padding:2px 6px; font-size:11px}
+    .sidePanel .collections{gap:6px}
+    .sidePanel .pbox{padding:6px}
+    .sidePanel .takenGrid{gap:4px; margin-top:6px}
+    .sidePanel .takenCol{padding:5px}
+    .sidePanel .cardsMini{gap:4px; margin-top:4px}
+    .sidePanel .chip{padding:2px 6px; font-size:10px}
     .card{position:absolute; width:64px; height:90px; border-radius:14px; background:linear-gradient(180deg,#1f2937,#111827); border:1px solid rgba(255,255,255,.14); box-shadow:0 10px 18px rgba(0,0,0,.32); display:flex; align-items:center; justify-content:center; font-weight:700; user-select:none; transition:transform .10s ease, box-shadow .14s ease, filter .14s ease; text-align:center; will-change:transform}
     .card .big{font-size:22px; font-weight:720; line-height:1; position:relative; z-index:2}
     .card .small{position:absolute; top:6px; left:50%; transform:translateX(-50%); font-size:11px; color:rgba(255,255,255,.96); font-weight:600; letter-spacing:.6px; white-space:nowrap; z-index:3; background:rgba(0,0,0,.22); border:1px solid rgba(255,255,255,.14); border-radius:999px; padding:1px 3px; text-transform:uppercase; text-shadow:0 1px 0 rgba(0,0,0,.35); backdrop-filter:blur(6px)}
@@ -89,7 +99,7 @@
       main{padding:8px; gap:8px}
       .panel{border-radius:10px}
       .bd{padding:7px}
-      .sidePanel .bd{display:flex; flex-direction:column; gap:6px; overflow:hidden}
+      .sidePanel .bd{display:flex; flex-direction:column; gap:6px; overflow:auto}
       .sidePanel .bd > .row{margin-bottom:0!important}
       .sidePanel button{width:100%; padding:5px 10px; font-size:13px}
       .status{gap:6px; font-size:12px}
