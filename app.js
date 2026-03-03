@@ -472,6 +472,12 @@ function takeCard(idx){
   endTurnOrAge();
 }
 
+function onHumanCardClick(idx){
+  if(!G || G.ended || G.pendingSwapChoice) return;
+  if(G.players[G.current].isAI) return;
+  takeCard(idx);
+}
+
 function canUseJokerDouble(player=G.current){
   return !G.ended && G.current===player && G.players[player].joker && G.picksLeftThisTurn===1 && !G.pendingSwapChoice;
 }
@@ -1101,7 +1107,7 @@ function render(){
     e.className=`card ${s.removed?"removed":""} ${s.pendingAIPick?"aiPickedPreview":""} ${s.faceDown?"faceDown":""} ${!s.faceDown&&!isSlotGone(s)?cardClass(s.card):""} ${acc[i]&&!s.faceDown&&!isSlotGone(s)?"open accessible":""} ${!acc[i]&&!isSlotGone(s)&&!s.faceDown?"blocked":""} ${hasChildren?"covering":""} ${hasParent?"overlapped":""}`;
     e.style.left=s.x+"px"; e.style.top=s.y+"px"; e.style.zIndex=String((s.row+1)*100+s.col);
     e.innerHTML=s.faceDown?"<div class='big'>🂠</div>":`<div class='small'>${SUIT_ABBR[s.card.suit]||SUIT_NAME[s.card.suit]}</div><div class='cornerL'></div><div class='cornerR'></div><div class='big'>${label(s.card)}</div>`;
-    e.onclick=()=>takeCard(i);
+    e.onclick=()=>onHumanCardClick(i);
     t.appendChild(e);
   }
   maybeRunAiTurn();
