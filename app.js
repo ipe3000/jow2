@@ -390,8 +390,8 @@ function newGame(firstPlayer=null){
     age:"ancient", nextAgeFirst:1-first, current:first, ended:false,
     decks:{ancient,modern}, tableau:null,
     players:[
-      {name:"Player 1",cards:[],joker:true,isAI:false,feat:{sw:0,hMask:0,hLinks:0,cSum:0,dMask:0,dAdj:0,kCount:0}},
-      {name:"Player 2",cards:[],joker:true,isAI:true,feat:{sw:0,hMask:0,hLinks:0,cSum:0,dMask:0,dAdj:0,kCount:0}}
+      {name:"You",cards:[],joker:true,isAI:false,feat:{sw:0,hMask:0,hLinks:0,cSum:0,dMask:0,dAdj:0,kCount:0}},
+      {name:"AI",cards:[],joker:true,isAI:true,feat:{sw:0,hMask:0,hLinks:0,cSum:0,dMask:0,dAdj:0,kCount:0}}
     ],
     lastTaken:null, picksLeftThisTurn:1, modernSwapStillAvailable:false, pendingSwapChoice:null,
     pendingAIRemovals:[]
@@ -417,7 +417,7 @@ function promptChooseStarter({
       ${confirmLine}
       <p>Choose who starts:</p>
       <div class='optRow'>
-        <button id='newStartHuman' class='primary'>YOU start</button>
+        <button id='newStartHuman' class='primary'>You start</button>
         <button id='newStartAi'>AI starts</button>
       </div>
       ${cancelRow}
@@ -1038,14 +1038,14 @@ function render(){
     sideTurn.classList.remove("aiTurn");
   }else{
     const aiTurn=G.players[G.current].isAI;
-    sideTurn.textContent=`Turn: ${aiTurn?"AI":"HU"}`;
+    sideTurn.textContent=`Turn: ${aiTurn?"AI":"You"}`;
     sideTurn.classList.toggle("aiTurn",aiTurn);
   }
 
   const sg=document.getElementById("statusGrid");
   const sw=G.players.map(p=>swords(p.cards)), tp=G.players.map(p=>breakthroughCount(p.cards));
   const militaryLead=sw[1]-sw[0];
-  const supremacyLabel=militaryLead===0?"Tie":(militaryLead>0?"AI":"PL");
+  const supremacyLabel=militaryLead===0?"Tie":(militaryLead>0?"AI":"You");
   sg.innerHTML=`<div class='pill'>Tech Seq.: ${tp[0]} / ${tp[1]}</div><div class='pill'>Wonders: ${G.players[0].joker?"✅":"❌"} / ${G.players[1].joker?"✅":"❌"}</div><div class='pill'>Mil. Supr.: ${supremacyLabel} +${Math.abs(militaryLead)}</div>`;
 
   const useBtn=document.getElementById("useJokerBtn");
