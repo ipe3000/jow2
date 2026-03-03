@@ -993,7 +993,7 @@ function maybeRunAiTurn(){
   aiTimer=setTimeout(()=>{
     if(!G||G.ended||G.current!==1) return;
     const thinkingMs=getAiThinkingBudgetMs(G);
-    log(`AI Monte Carlo sta pensando (~${(thinkingMs/1000).toFixed(1)}s)...`);
+    log(`Monte Carlo AI is thinking (~${(thinkingMs/1000).toFixed(1)}s)...`);
     const idx=aiSelectMove();
     if(idx!==null) takeCard(idx);
   },120);
