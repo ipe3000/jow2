@@ -970,17 +970,17 @@ function remainingCardsThisAgeSim(S){
 }
 function jokerDecisionThresholdSim(S,player=S.current){
   const left=remainingCardsThisAgeSim(S);
-  let threshold=0.06;
+  let threshold=0.08;
   if(S.age==="ancient"){
-    if(left>12) threshold=0.09;
-    else if(left>7) threshold=0.07;
-    else threshold=0.05;
+    if(left>12) threshold=0.11;
+    else if(left>7) threshold=0.09;
+    else threshold=0.07;
     const t=Math.min(1,Math.max(0,left/18));
     const second=1-S.nextAgeFirst;
-    threshold+=0.03+0.04*t;
-    if(player===second) threshold+=0.02+0.03*t;
+    threshold+=0.04+0.05*t;
+    if(player===second) threshold+=0.03+0.04*t;
   }else{
-    threshold=left>10?0.07:0.04;
+    threshold=left>10?0.09:0.06;
   }
   return threshold;
 }
