@@ -29,6 +29,9 @@ let aiTimer=null;
 let renderScheduled=false;
 
 const AI_BASE_BUDGET_MS=5000;
+const HEURISTIC_WEIGHT_FOOD=0.8;
+const HEURISTIC_WEIGHT_DIAMOND=0.9;
+const HEURISTIC_FOOD_LOW_CARD_BONUS=-0.2;
 
 function isSlotGone(slot){
   return !!(slot.removed || slot.pendingAIPick);
@@ -721,6 +724,7 @@ function staticTakeValue(S,player,card){
     const before=f.cSum;
     const after=f.cSum+clubValue(card);
     dFood=after-before;
+    if(clubValue(card)===1) dFood+=HEURISTIC_FOOD_LOW_CARD_BONUS;
   }
 
   let dDia=0;
@@ -733,7 +737,7 @@ function staticTakeValue(S,player,card){
   const newKR=kingRiskFromCount(f.kCount + (card.rank==="K" ? 1 : 0));
   const dKing=newKR-oldKR;
 
-  return dSw*1.2 + dBt*1.6 + dFood*1.0 + dDia*0.45 + dKing*1.4;
+  return dSw*1.2 + dBt*1.6 + dFood*HEURISTIC_WEIGHT_FOOD + dDia*HEURISTIC_WEIGHT_DIAMOND + dKing*1.4;
 }
 function cheapEvalTake(S,player,idx){
   const slot=S.tableau.slots[idx];
@@ -756,6 +760,7 @@ function cheapEvalTake(S,player,idx){
     const before=me.cSum;
     const after=me.cSum+clubValue(card);
     dFood=after-before;
+    if(clubValue(card)===1) dFood+=HEURISTIC_FOOD_LOW_CARD_BONUS;
   }
 
   let dDia=0;
@@ -771,7 +776,7 @@ function cheapEvalTake(S,player,idx){
   const deny=(card.suit==="S" ? 0.2 : 0) + (card.suit==="H" ? 0.15 : 0);
   const pressure=Math.max(0,opp.sw-me.sw-5)*0.05;
 
-  const baseScore=dSw*1.2 + dBt*1.6 + dFood*1.0 + dDia*0.45 + dKing*1.4 + deny + pressure;
+  const baseScore=dSw*1.2 + dBt*1.6 + dFood*HEURISTIC_WEIGHT_FOOD + dDia*HEURISTIC_WEIGHT_DIAMOND + dKing*1.4 + deny + pressure;
 
   let revealBonus=0;
   const rev=S.tableau.coveredByRev?.[idx] || [];

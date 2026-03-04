@@ -29,6 +29,9 @@ function mcSettings(level){
  return {strength,tScale,eps,modernSwapSimulations};
 }
 const DEFAULT_MC_CFG=mcSettings(1);
+const HEURISTIC_WEIGHT_FOOD=0.8;
+const HEURISTIC_WEIGHT_DIAMOND=0.9;
+const HEURISTIC_FOOD_LOW_CARD_BONUS=-0.2;
 const pct=(x,n)=>n?`${(100*x/n).toFixed(1)}%`:"0.0%"; const avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:0;
 const fmtPct=v=>`${(100*v).toFixed(1)}%`;
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
@@ -112,6 +115,7 @@ function staticTakeValue(S,player,card){
   const before=f.cSum;
   const after=f.cSum+clubValue(card);
   dFood=after-before;
+  if(clubValue(card)===1) dFood+=HEURISTIC_FOOD_LOW_CARD_BONUS;
  }
  let dDia=0;
  if(card.suit==="D"){
@@ -121,7 +125,7 @@ function staticTakeValue(S,player,card){
  const oldKR=kingRiskFromCount(f.kCount);
  const newKR=kingRiskFromCount(f.kCount+(card.rank==="K"?1:0));
  const dKing=newKR-oldKR;
- return dSw*1.2+dBt*1.6+dFood*1.0+dDia*0.45+dKing*1.4;
+ return dSw*1.2+dBt*1.6+dFood*HEURISTIC_WEIGHT_FOOD+dDia*HEURISTIC_WEIGHT_DIAMOND+dKing*1.4;
 }
 function cheapEvalTake(S,player,idx){
  const slot=S.tableau.slots[idx]; if(!slot || slot.removed || slot.faceDown) return -Infinity;
@@ -138,6 +142,7 @@ function cheapEvalTake(S,player,idx){
   const before=me.cSum;
   const after=me.cSum+clubValue(card);
   dFood=after-before;
+  if(clubValue(card)===1) dFood+=HEURISTIC_FOOD_LOW_CARD_BONUS;
  }
  let dDia=0;
  if(card.suit==="D"){
@@ -148,7 +153,7 @@ function cheapEvalTake(S,player,idx){
  const newKR=kingRiskFromCount(me.kCount+(card.rank==="K"?1:0));
  const dKing=newKR-oldKR;
  const deny=(card.suit==="S"?0.2:0)+(card.suit==="H"?0.15:0), pressure=Math.max(0,opp.sw-me.sw-5)*0.05;
- const baseScore=dSw*1.2+dBt*1.6+dFood*1.0+dDia*0.45+dKing*1.4+deny+pressure;
+ const baseScore=dSw*1.2+dBt*1.6+dFood*HEURISTIC_WEIGHT_FOOD+dDia*HEURISTIC_WEIGHT_DIAMOND+dKing*1.4+deny+pressure;
  let revealBonus=0;
  const rev=S.tableau.coveredByRev?.[idx]||[];
  for(const upperIdx of rev){
